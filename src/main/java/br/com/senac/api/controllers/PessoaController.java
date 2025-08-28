@@ -40,4 +40,14 @@ public class PessoaController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        try {
+            pessoaService.deletar(id);
+            return ResponseEntity.ok(null);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

@@ -39,4 +39,14 @@ public class ProdutoController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        try {
+            produtoService.deletar(id);
+            return ResponseEntity.ok(null);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

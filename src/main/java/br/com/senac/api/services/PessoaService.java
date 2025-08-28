@@ -43,4 +43,11 @@ public class PessoaService {
 
         return out;
     }
+
+    public void deletar(Long id){
+        if(!pessoaRepositorio.existsById(id)) {
+            throw new RuntimeException("Registro não encontrado");
+        }
+        pessoaRepositorio.deleteById(id);
+    }
 }

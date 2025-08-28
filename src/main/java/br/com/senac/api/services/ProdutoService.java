@@ -1,7 +1,9 @@
 package br.com.senac.api.services;
 
 import br.com.senac.api.controllers.dtos.ClientesRequestDTO;
+import br.com.senac.api.controllers.dtos.PessoaRequestDTO;
 import br.com.senac.api.controllers.dtos.ProdutoRequestDTO;
+import br.com.senac.api.modelos.Pessoa;
 import br.com.senac.api.modelos.Produto;
 import br.com.senac.api.repositorios.ProdutoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,7 @@ public class ProdutoService {
 
 
     public void criar (ProdutoRequestDTO produto) {
-        Produto produtoPersist = new Produto();
-        produtoPersist.setNome(produto.getNome());
-        produtoPersist.setDescricao(produto.getDescricao());
+        Produto produtoPersist = this.produtoRequestDtoParaPessoa(produto);
 
         produtoRepositorio.save(produtoPersist);
     }
@@ -32,10 +32,23 @@ public class ProdutoService {
         if (produtoRepositorio.existsById(id) == false) {
             throw new Exception("Registro não encontrado.");
         }
-        Produto produtoPersist = new Produto();
-        produtoPersist.setNome(produto.getNome());
-        produtoPersist.setDescricao(produto.getDescricao());
+        Produto produtoPersist = this.produtoRequestDtoParaPessoa(produto);
         produtoPersist.setId(id);//só botar o id
         return produtoRepositorio.save(produtoPersist);
+    }
+
+    private Produto produtoRequestDtoParaPessoa(ProdutoRequestDTO in){
+        Produto out = new Produto();
+        out.setNome(in.getNome());
+        out.setDescricao(in.getDescricao());
+
+        return out;
+    }
+
+    public void deletar(Long id){
+        if(!produtoRepositorio.existsById(id)) {
+            throw new RuntimeException("Registro não encontrado");
+        }
+        produtoRepositorio.deleteById(id);
     }
 }
