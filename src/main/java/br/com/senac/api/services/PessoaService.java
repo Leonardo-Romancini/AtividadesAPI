@@ -18,9 +18,7 @@ public class PessoaService {
 
 
     public void criar (PessoaRequestDTO pessoa) {
-        Pessoa pessoaPersist = new Pessoa();
-        pessoaPersist.setNome(pessoa.getNome());
-        pessoaPersist.setSobrenome(pessoa.getSobrenome());
+        Pessoa pessoaPersist = this.pessoaRequestDtoParaPessoa(pessoa);
 
         pessoaRepositorio.save(pessoaPersist);
     }
@@ -33,10 +31,16 @@ public class PessoaService {
         if (pessoaRepositorio.existsById(id) == false) {
             throw new Exception("Registro não encontrado.");
         }
-        Pessoa pessoaPersist = new Pessoa();
-        pessoaPersist.setNome(pessoa.getNome());
-        pessoaPersist.setSobrenome(pessoa.getSobrenome());
-        pessoaPersist.setId(id);//só botar o id
+        Pessoa pessoaPersist = this.pessoaRequestDtoParaPessoa(pessoa);
+        pessoaPersist.setId(id);//só botar o id para fazer ser update
         return pessoaRepositorio.save(pessoaPersist);
+    }
+
+    private Pessoa pessoaRequestDtoParaPessoa(PessoaRequestDTO in){
+        Pessoa out = new Pessoa();
+        out.setNome(in.getNome());
+        out.setSobrenome(in.getSobrenome());
+
+        return out;
     }
 }
