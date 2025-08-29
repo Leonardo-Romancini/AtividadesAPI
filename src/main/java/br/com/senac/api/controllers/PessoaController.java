@@ -6,6 +6,7 @@ import br.com.senac.api.modelos.Carro;
 import br.com.senac.api.modelos.Clientes;
 import br.com.senac.api.modelos.Pessoa;
 import br.com.senac.api.services.PessoaService;
+import br.com.senac.api.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,12 +43,13 @@ public class PessoaController {
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
         try {
             pessoaService.deletar(id);
             return ResponseEntity.ok(null);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(ResponseUtil.response(e.getMessage()));
         }
     }
 }
